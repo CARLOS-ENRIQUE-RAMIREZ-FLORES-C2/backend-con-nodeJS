@@ -14,16 +14,11 @@ const express = require('express');
 const app = express();
 
 const { config } = require('./config/index');
+const moviesApi = require('./routes/movies')
 
-app.get('/', (req, res) => {
-    res.send('hi');
-});
+moviesApi(app);
 
 
-app.get('/json', (req, res) => {
-    res.send({'hi':' carlos'});
-});
-
-app.listen(config.port , () => {
+app.listen(config.port, () => {
     console.log(`Corriendo en http://localhost:${config.port}`);
 });
