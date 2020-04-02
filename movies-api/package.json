@@ -1,0 +1,47 @@
+{
+  "name": "backend-con-nodejs",
+  "version": "1.0.0",
+  "description": "api para movies",
+  "main": "index.js",
+  "scripts": {
+    "dev": "DEBUG=app:* nodemon index",
+    "start": "NODE_ENV=production node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CARLOS-ENRIQUE-RAMIREZ-FLORES-C2/backend-con-nodeJS.git"
+  },
+  "keywords": [
+    "api",
+    "movies",
+    "platzi",
+    "backend-node"
+  ],
+  "author": "Carlos Enrique Ramírez Flores",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CARLOS-ENRIQUE-RAMIREZ-FLORES-C2/backend-con-nodeJS/issues"
+  },
+  "homepage": "https://github.com/CARLOS-ENRIQUE-RAMIREZ-FLORES-C2/backend-con-nodeJS#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.1.1",
+    "nodemon": "^2.0.2",
+    "prettier": "^2.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
+  }
+}
