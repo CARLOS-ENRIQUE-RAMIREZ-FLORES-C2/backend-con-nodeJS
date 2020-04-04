@@ -5,21 +5,21 @@
  * https://docs.mongodb.com/manual/reference/method/js-collection/
  * Video 27 platzi
  */
-const { MongoClient, Objectid } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
+
 const { config } = require('../config');
 
 const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponentComponent(config.dbPassword);
+const PASSWORD = encodeURIComponent(config.dbPassword);
 const DB_NAME = config.dbName;
 
-const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${DB_NAME}/test?retryWrites=true&w=majority`;
+const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${config.dbHost}/${DB_NAME}?retryWrites=true&w=majority`;
 
 class MongoLib {
     constructor() {
-        this.client = new MongoClient(MONGO_URI, { useNewUrlParser: true });
+        this.client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
         this.dbName = DB_NAME;
     }
-
     connect() {
         if (!MongoLib.connection) {
             MongoLib.connection = new Promise((resolve, reject) => {
@@ -42,7 +42,7 @@ class MongoLib {
     }
     get(collection, id) {
         return this.connect().then(db => {
-            return db.collection(collection).findOne({ _id: Objectid(id) }).toArray();
+            return db.collection(collection).findOne({ _id: ObjectId(id) });
         })
     }
     create(collection, data) {
@@ -52,14 +52,15 @@ class MongoLib {
     }
     update(collection, id, data) {
         return this.connect().then(db => {
-            return db.collection(collection).updateOne({ _id: Objectid(id) }, { $set: data }, { upsert: true });
+            return db.collection(collection).updateOne({ _id: ObjectId(id) }, { $set: data }, { upsert: true });
         }).then(result => result.upsertId || id);
     }
     delete(collection, id) {
+        console.log(collection,id)
         return this.connect().then(db => {
-            return db.collection(collection).deleteOne({ _id: Objectid(id) });
-        }).then(() => id)
+            return db.collection(collection).deleteOne({ _id: ObjectId(id) });
+        }).then(() => id).catch((e) => e)
     }
-});
+};
 
 module.exports = MongoLib;
