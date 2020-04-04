@@ -13,6 +13,9 @@ Dependencias de desarrollo
 const express = require('express');
 const app = express();
 
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const { config } = require('./config/index');
 const moviesApi = require('./routes/movies')
 
@@ -20,7 +23,11 @@ const { logErrors, wrapErrors, errorHandler } = require('./utils/middleware/erro
 const notFoundHandler = require('./utils/middleware/notFoundHandler');
 
 
-app.use(express.json());
+//app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false }));
+
 moviesApi(app);
 
 // para manejar el error 404
