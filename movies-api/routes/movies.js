@@ -1,5 +1,9 @@
 const express = require('express');
 const MoviesService = require('../services/movies');
+
+const { movieIdSchema, createMovieSchema, updateMovieSchema } = require('../utils/schemas/movies');
+const validationHandler = require('../utils/middleware/validationHandler');
+
 function moviesApi(app) {
     const router = express.Router();
     app.use('/api/movies', router);
@@ -10,7 +14,6 @@ function moviesApi(app) {
         const { tags } = req.query;
         try {
             const movies = await moviesService.getMovies();
-            throw new Error('Esto es un error a proposito');
             res.status(200).json({
                 data: movies,
                 message: "movies listed"
@@ -21,7 +24,7 @@ function moviesApi(app) {
         }
     });
 
-    router.get('/:IdMovie', async (req, res, next) => {
+    router.get('/:IdMovie', validationHandler({ IdMovie: movieIdSchema }, 'params'), async (req, res, next) => {
         const { IdMovie } = req.params;
         try {
             const movies = await moviesService.getMovie({ IdMovie })
@@ -35,7 +38,7 @@ function moviesApi(app) {
         }
     });
 
-    router.post('/', async (req, res, next) => {
+    router.post('/', validationHandler('createMovieSchema'), async (req, res, next) => {
         const { body: movie } = req;
         try {
             const createdMovie = await moviesService.createMovie({ movie });
@@ -49,7 +52,7 @@ function moviesApi(app) {
         }
     });
 
-    router.put('/:IdMovie', async (req, res, next) => {
+    router.put('/:IdMovie', validationHandler({ IdMovie: movieIdSchema }, 'params'), validationHandler('updateMovieSchema'), async (req, res, next) => {
         const { IdMovie } = req.params;
         const { body: movie } = req;
         try {
@@ -64,7 +67,7 @@ function moviesApi(app) {
         }
     });
 
-    router.delete('/:IdMovie', async (req, res, next) => {
+    router.delete('/:IdMovie', validationHandler({ IdMovie: movieIdSchema }, 'params'), async (req, res, next) => {
         const { IdMovie } = req.params;
         try {
             console.log(IdMovie);
