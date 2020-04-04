@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "DEBUG=app:* nodemon index",
     "start": "NODE_ENV=production node index",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "build": "movies-api build --output public"
   },
   "repository": {
     "type": "git",
