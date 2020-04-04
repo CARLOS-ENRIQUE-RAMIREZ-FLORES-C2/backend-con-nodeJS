@@ -1,5 +1,4 @@
 const express = require('express');
-const { moviesMock } = require('../utils/mocks/movies');
 const MoviesService = require('../services/movies');
 function moviesApi(app) {
     const router = express.Router();
@@ -11,6 +10,7 @@ function moviesApi(app) {
         const { tags } = req.query;
         try {
             const movies = await moviesService.getMovies();
+            throw new Error('Esto es un error a proposito');
             res.status(200).json({
                 data: movies,
                 message: "movies listed"

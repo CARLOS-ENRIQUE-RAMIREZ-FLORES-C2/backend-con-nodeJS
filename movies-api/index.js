@@ -16,9 +16,14 @@ const app = express();
 const { config } = require('./config/index');
 const moviesApi = require('./routes/movies')
 
+const { logErrors, errorHandler } = require('./utils/middleware/errorHandlers');
+
+
 app.use(express.json());
 moviesApi(app);
-
+//middleware siempre van al final de las rutas
+app.use(logErrors);
+app.use(errorHandler);
 
 app.listen(config.port, () => {
     console.log(`Corriendo en http://localhost:${config.port}`);
